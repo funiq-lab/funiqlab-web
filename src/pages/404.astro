@@ -1,0 +1,13 @@
+---
+import { Image } from "astro:assets";
+
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+import error404 from "@/assets/404_error.svg";
+---
+
+<BaseLayout>
+  <div class="flex justify-center align-middle">
+    <Image src={error404} alt="Not found" class="h-[50dvh]" />
+  </div>
+</BaseLayout>
