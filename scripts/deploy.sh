@@ -7,7 +7,7 @@ set -e  # Exit on any error
 
 # Configuration
 PROJECT_NAME="funiqlab-web"
-BUILD_DIR="dist"
+BUILD_DIR="${BUILD_DIR:-dist}"  # Allow override from environment variable
 BACKUP_DIR="/var/www/backup"
 TARGET_DIR="/var/www/funiqlab-web"
 WEB_USER="www-data"
@@ -98,8 +98,46 @@ deploy_files() {
     log_success "Files deployed successfully"
 }
 
+deploy_nginx_config() {
+    log_info "Deploying nginx configuration..."
+    
+    # Try multiple possible locations for nginx config
+    NGINX_CONFIG_SRC=""
+    for path in "scripts/nginx.conf.example" "./nginx.conf.example" "/tmp/scripts/nginx.conf.example"; do
+        if [ -f "$path" ]; then
+            NGINX_CONFIG_SRC="$path"
+            break
+        fi
+    done
+    
+    NGINX_CONFIG_DEST="/etc/nginx/sites-available/funiqlab.com"
+    NGINX_SITES_ENABLED="/etc/nginx/sites-enabled"
+    
+    # Check if nginx config exists
+    if [ -z "$NGINX_CONFIG_SRC" ] || [ ! -f "$NGINX_CONFIG_SRC" ]; then
+        log_warning "Nginx configuration file not found in expected locations"
+        return 0
+    fi
+    
+    # Copy configuration
+    sudo cp "$NGINX_CONFIG_SRC" "$NGINX_CONFIG_DEST"
+    log_success "Nginx configuration copied to $NGINX_CONFIG_DEST"
+    
+    # Enable the site if not already enabled
+    if [ ! -f "$NGINX_SITES_ENABLED/funiqlab.com" ]; then
+        sudo ln -s "$NGINX_CONFIG_DEST" "$NGINX_SITES_ENABLED/funiqlab.com"
+        log_success "Nginx site enabled"
+    fi
+    
+    # Remove default site if it exists
+    if [ -f "$NGINX_SITES_ENABLED/default" ]; then
+        sudo rm -f "$NGINX_SITES_ENABLED/default"
+        log_success "Default nginx site disabled"
+    fi
+}
+
 reload_web_server() {
-    log_info "Reloading Nginx web server..."
+    log_info "Testing and reloading Nginx web server..."
     
     # Check if nginx is available
     if command -v nginx > /dev/null; then
@@ -179,6 +217,7 @@ main() {
             check_requirements
             create_backup
             deploy_files
+            deploy_nginx_config
             reload_web_server
             validate_deployment
             show_status

@@ -97,7 +97,17 @@ jobs:
         target: "/tmp/funiqlab-web-deploy"
         strip_components: 1
     
-    - name: Move files and set permissions
+    - name: Copy deployment scripts and configs
+      uses: appleboy/scp-action@v0.1.7
+      with:
+        host: ${{ secrets.SERVER_HOST }}
+        username: ${{ secrets.SERVER_USER }}
+        key: ${{ secrets.SERVER_SSH_KEY }}
+        port: ${{ secrets.SERVER_PORT || 22 }}
+        source: "scripts/deploy.sh,scripts/nginx.conf.example"
+        target: "/tmp/"
+    
+    - name: Execute deployment script
       uses: appleboy/ssh-action@v1.0.3
       with:
         host: ${{ secrets.SERVER_HOST }}
@@ -105,26 +115,22 @@ jobs:
         key: ${{ secrets.SERVER_SSH_KEY }}
         port: ${{ secrets.SERVER_PORT || 22 }}
         script: |
-          # Move files from temp location to web directory
-          sudo mv /tmp/funiqlab-web-deploy/* /var/www/funiqlab-web/
+          # Make deploy script executable
+          chmod +x /tmp/scripts/deploy.sh
           
-          # Set correct ownership and permissions
-          sudo chown -R www-data:www-data /var/www/funiqlab-web
-          sudo chmod -R 644 /var/www/funiqlab-web
-          sudo find /var/www/funiqlab-web -type d -exec chmod 755 {} \;
+          # Move build files to expected location for deploy script
+          sudo mkdir -p /tmp/funiqlab-build
+          sudo mv /tmp/funiqlab-web-deploy/* /tmp/funiqlab-build/
           
-          # Clean up temp directory
-          sudo rm -rf /tmp/funiqlab-web-deploy
+          # Execute deployment using unified script
+          cd /tmp
+          sudo BUILD_DIR="/tmp/funiqlab-build" ./scripts/deploy.sh deploy
           
-          # Reload nginx
-          if command -v nginx > /dev/null; then
-            sudo nginx -t && sudo systemctl reload nginx
-          else
-            echo "❌ Nginx not found! Please install nginx on the server."
-            exit 1
-          fi
+          # Clean up
+          sudo rm -rf /tmp/funiqlab-build
+          sudo rm -rf /tmp/scripts
           
-          echo "✅ Deployment completed successfully!"
+          echo "✅ Deployment completed via unified script!"
           echo "📁 Files deployed to: /var/www/funiqlab-web"
           echo "🌐 Site should be live at: https://www.funiqlab.com"
 
