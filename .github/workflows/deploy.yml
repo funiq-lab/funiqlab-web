@@ -60,6 +60,9 @@ jobs:
     if: github.ref == 'refs/heads/main'
     
     steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
     - name: Download build artifacts
       uses: actions/download-artifact@v4
       with:
@@ -104,7 +107,7 @@ jobs:
         username: ${{ secrets.SERVER_USER }}
         key: ${{ secrets.SERVER_SSH_KEY }}
         port: ${{ secrets.SERVER_PORT || 22 }}
-        source: "scripts/deploy.sh,scripts/nginx.conf.example"
+        source: "scripts/deploy.sh,scripts/nginx.conf.template"
         target: "/tmp/"
     
     - name: Execute deployment script

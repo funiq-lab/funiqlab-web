@@ -103,7 +103,7 @@ deploy_nginx_config() {
     
     # Try multiple possible locations for nginx config
     NGINX_CONFIG_SRC=""
-    for path in "scripts/nginx.conf.example" "./nginx.conf.example" "/tmp/scripts/nginx.conf.example"; do
+    for path in "scripts/nginx.conf.template" "./nginx.conf.template" "/tmp/scripts/nginx.conf.template"; do
         if [ -f "$path" ]; then
             NGINX_CONFIG_SRC="$path"
             break
