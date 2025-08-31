@@ -1,0 +1,37 @@
+{
+  "project": "funiqlab-web",
+  "version": "0.0.1",
+  "deployment": {
+    "target_directory": "/var/www/funiqlab-web",
+    "backup_directory": "/var/www/backup",
+    "web_user": "www-data",
+    "domain": "https://www.funiqlab.com",
+    "build_command": "pnpm build",
+    "deploy_script": "./scripts/deploy.sh"
+  },
+  "ci_cd": {
+    "platform": "GitHub Actions",
+    "workflow_file": ".github/workflows/deploy.yml",
+    "trigger": ["push to main/master", "pull request"],
+    "required_secrets": [
+      "SERVER_HOST",
+      "SERVER_USER", 
+      "SERVER_SSH_KEY",
+      "SERVER_PORT"
+    ]
+  },
+  "monitoring": {
+    "log_paths": [
+      "/var/log/nginx/funiqlab-web.access.log",
+      "/var/log/nginx/funiqlab-web.error.log"
+    ],
+    "health_check": "curl -I https://www.funiqlab.com",
+    "files_check": "ls -la /var/www/funiqlab-web/"
+  },
+  "commands": {
+    "deploy": "./scripts/deploy.sh deploy",
+    "rollback": "./scripts/deploy.sh rollback", 
+    "status": "./scripts/deploy.sh status",
+    "validate": "./scripts/deploy.sh validate"
+  }
+}

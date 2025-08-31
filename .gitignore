@@ -22,3 +22,22 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# deployment files
+*.log
+*.tmp
+*.backup
+deploy_*.sh
+
+# SSH keys (security)
+*.pem
+*.key
+!*.example.key
+
+# deployment configs (if contains sensitive data)
+deploy.config
+server.config
+
+# cache directories
+.cache/
+.temp/

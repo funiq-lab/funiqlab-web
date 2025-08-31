@@ -1,0 +1,145 @@
+name: Build and Deploy to Server
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+    
+    - name: Install pnpm
+      uses: pnpm/action-setup@v2
+      with:
+        version: 8
+        run_install: false
+    
+    - name: Get pnpm store directory
+      shell: bash
+      run: |
+        echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+    
+    - name: Setup pnpm cache
+      uses: actions/cache@v4
+      with:
+        path: ${{ env.STORE_PATH }}
+        key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+        restore-keys: |
+          ${{ runner.os }}-pnpm-store-
+    
+    - name: Install dependencies
+      run: pnpm install --frozen-lockfile
+    
+    - name: Type check
+      run: pnpm astro check
+    
+    - name: Build project
+      run: pnpm build
+    
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: build-files
+        path: dist/
+        retention-days: 1
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    
+    steps:
+    - name: Download build artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: build-files
+        path: dist/
+    
+    - name: Deploy to server
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.SERVER_HOST }}
+        username: ${{ secrets.SERVER_USER }}
+        key: ${{ secrets.SERVER_SSH_KEY }}
+        port: ${{ secrets.SERVER_PORT || 22 }}
+        script: |
+          # Create backup of current deployment
+          sudo mkdir -p /var/www/backup
+          if [ -d "/var/www/funiqlab-web" ]; then
+            sudo cp -r /var/www/funiqlab-web /var/www/backup/funiqlab-web-$(date +%Y%m%d-%H%M%S)
+          fi
+          
+          # Create target directory
+          sudo mkdir -p /var/www/funiqlab-web
+          
+          # Clear old files
+          sudo rm -rf /var/www/funiqlab-web/*
+    
+    - name: Copy files to server
+      uses: appleboy/scp-action@v0.1.7
+      with:
+        host: ${{ secrets.SERVER_HOST }}
+        username: ${{ secrets.SERVER_USER }}
+        key: ${{ secrets.SERVER_SSH_KEY }}
+        port: ${{ secrets.SERVER_PORT || 22 }}
+        source: "dist/*"
+        target: "/tmp/funiqlab-web-deploy"
+        strip_components: 1
+    
+    - name: Move files and set permissions
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.SERVER_HOST }}
+        username: ${{ secrets.SERVER_USER }}
+        key: ${{ secrets.SERVER_SSH_KEY }}
+        port: ${{ secrets.SERVER_PORT || 22 }}
+        script: |
+          # Move files from temp location to web directory
+          sudo mv /tmp/funiqlab-web-deploy/* /var/www/funiqlab-web/
+          
+          # Set correct ownership and permissions
+          sudo chown -R www-data:www-data /var/www/funiqlab-web
+          sudo chmod -R 644 /var/www/funiqlab-web
+          sudo find /var/www/funiqlab-web -type d -exec chmod 755 {} \;
+          
+          # Clean up temp directory
+          sudo rm -rf /tmp/funiqlab-web-deploy
+          
+          # Reload nginx
+          if command -v nginx > /dev/null; then
+            sudo nginx -t && sudo systemctl reload nginx
+          else
+            echo "❌ Nginx not found! Please install nginx on the server."
+            exit 1
+          fi
+          
+          echo "✅ Deployment completed successfully!"
+          echo "📁 Files deployed to: /var/www/funiqlab-web"
+          echo "🌐 Site should be live at: https://www.funiqlab.com"
+
+  notify:
+    needs: [build, deploy]
+    runs-on: ubuntu-latest
+    if: always()
+    
+    steps:
+    - name: Notify deployment status
+      run: |
+        if [ "${{ needs.deploy.result }}" == "success" ]; then
+          echo "🎉 Deployment successful!"
+        else
+          echo "❌ Deployment failed!"
+          exit 1
+        fi
