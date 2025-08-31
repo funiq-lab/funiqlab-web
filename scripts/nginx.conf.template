@@ -1,8 +1,6 @@
-# Nginx configuration for FuniqLab Web
+# Nginx configuration for FuniqLab Main Website
 # Copy to: /etc/nginx/sites-available/funiqlab.com
 # Enable with: sudo ln -s /etc/nginx/sites-available/funiqlab.com /etc/nginx/sites-enabled/
-# Test with: sudo nginx -t
-# Reload with: sudo systemctl reload nginx
 
 server {
     listen 80;
@@ -12,16 +10,18 @@ server {
     root /var/www/funiqlab-web;
     index index.html index.htm;
 
-    # SSL Configuration (specific to this site)
-    ssl_certificate /etc/letsencrypt/live/www.funiqlab.com/fullchain.pem; # managed by Certbot
-    ssl_certificate_key /etc/letsencrypt/live/www.funiqlab.com/privkey.pem; # managed by Certbot
-    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
-    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+    # SSL Configuration (main domain includes global SSL options)
+    ssl_certificate /etc/letsencrypt/live/www.funiqlab.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/www.funiqlab.com/privkey.pem;
+    include /etc/letsencrypt/options-ssl-nginx.conf;
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
 
+    # Main website routes
     location / {
         try_files $uri $uri/ $uri.html /index.html;
     }
 
+    # Static assets caching
     location ~* \.(css|js|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$ {
         expires 30d;
         add_header Cache-Control "public, no-transform";
@@ -46,7 +46,6 @@ server {
         log_not_found off;
     }
 
-    # Robots.txt
     location = /robots.txt {
         allow all;
         log_not_found off;
