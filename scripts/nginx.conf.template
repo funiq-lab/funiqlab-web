@@ -11,8 +11,8 @@ server {
     index index.html index.htm;
 
     # SSL Configuration (main domain includes global SSL options)
-    ssl_certificate /etc/letsencrypt/live/www.funiqlab.com/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/www.funiqlab.com/privkey.pem;
+    ssl_certificate /etc/letsencrypt/live/funiqlab.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/funiqlab.com/privkey.pem;
     include /etc/letsencrypt/options-ssl-nginx.conf;
     ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
 
