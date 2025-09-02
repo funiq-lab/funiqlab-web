@@ -43,12 +43,12 @@ const {
     class=`font-sans ${hide_toc && hide_sidenav && max_width ? "" : "bg-card"}`
   >
     <Copy client:only="react" />
-    <div class="flex flex-col min-h-screen">
+    <div class="flex flex-col min-h-dvh">
       <Header class="border-b bg-background" />
       <main class="flex flex-1 flex-col md:flex-row container">
         <div
           class=`py-4 hidden md:flex max-h-static_sidemenu sticky top-[69px] 
-          ${hide_toc && hide_sidenav && max_width ? "w-screen" : "md:px-6 md:w-1/4 lg:w-1/5"}`
+          ${hide_toc && hide_sidenav && max_width ? "w-dvw" : "md:px-6 md:w-1/4 lg:w-1/5"}`
         >
           <ScrollArea className="h-full w-full" client:only="react">
             {
