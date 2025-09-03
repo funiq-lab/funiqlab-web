@@ -6,7 +6,7 @@ export const SITE = {
   desc: "Fun and unique",
   title: "FuniqLab",
   ogImage: "og-image.png",
-  repo: "https://github.com/funiq-lab/funiqlab-web",
+  repo: "https://github.com/funiq-lab",
 };
 
 export const LOCALE = {
