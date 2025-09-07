@@ -4,6 +4,8 @@ import tailwind from "@astrojs/tailwind";
 import react from "@astrojs/react";
 import mdx from "@astrojs/mdx";
 
+import sitemap from "@astrojs/sitemap";
+
 // https://astro.build/config
 export default defineConfig({
   site: "https://www.funiqlab.com",
@@ -30,13 +32,9 @@ export default defineConfig({
     locales: ["en", "zh-CN"],
     defaultLocale: "en",
   },
-  integrations: [
-    react(),
-    tailwind({
-      applyBaseStyles: false,
-    }),
-    mdx({
-      gfm: true,
-    }),
-  ],
+  integrations: [react(), tailwind({
+    applyBaseStyles: false,
+  }), mdx({
+    gfm: true,
+  }), sitemap()],
 });
