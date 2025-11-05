@@ -31,6 +31,16 @@ import { DrawYourSelfTextLogo, Logo } from "@/components/SiteLogo";
         Funiq AI
       </span>
     </div>
+
+    <div
+      class="flex items-center gap-2 transition-all duration-300 cursor-pointer hover:scale-110"
+      onclick="goToFuniqTrading()"
+    >
+      <Logo className="shrink-0 h-8 w-auto" />
+      <span class="text-lg font-medium text-[var(--white-icon)]">
+        Funiq Trading
+      </span>
+    </div>
   </div>
 </div>
 
@@ -41,6 +51,10 @@ import { DrawYourSelfTextLogo, Logo } from "@/components/SiteLogo";
 
   const goToFuniqAI = () => {
     window.open("https://github.com/funiq-lab/funiq-ai", "_blank");
+  };
+
+  const goToFuniqTrading = () => {
+    window.open("https://funiq-trading.funiqlab.com", "_blank");
   };
 </script>
 
