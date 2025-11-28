@@ -56,11 +56,11 @@ const ringGroups = orbitingProjects.reduce((acc, project) => {
 }, {} as Record<string, any>);
 ---
 
-<main
-  class="relative z-10 flex flex-col items-center justify-center pt-32 pb-12 px-4 overflow-hidden"
+<section
+  class="relative z-10 flex flex-col items-center justify-center flex-1 w-full py-12 px-4 overflow-hidden"
 >
   <div
-    class="w-full max-w-7xl grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center"
+    class="w-full max-w-[90rem] grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center"
   >
     {/* Left: Typography & CTA */}
     <div
@@ -148,7 +148,7 @@ const ringGroups = orbitingProjects.reduce((acc, project) => {
       ))}
     </div>
   </div>
-</main>
+</section>
 
 <script>
   const container = document.getElementById('magnetic-container');
