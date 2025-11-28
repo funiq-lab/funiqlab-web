@@ -1,0 +1,30 @@
+---
+import { SUPPORTED_LOCALES } from "@/i18n/config";
+import {
+  translateFor,
+  getLocaleInfo,
+  stripBaseAndLocale,
+  getRelativeLocalePath,
+} from "@/i18n/utils";
+import { LanguagePicker as LanguagePickerReact } from "./LanguagePicker";
+
+const t = translateFor(Astro.currentLocale);
+
+const unLocalizedPathname = stripBaseAndLocale(
+  Astro.currentLocale,
+  Astro.url.pathname
+);
+
+const locales = SUPPORTED_LOCALES.map(locale => ({
+  code: locale,
+  name: getLocaleInfo(locale).name,
+  href: getRelativeLocalePath(locale, unLocalizedPathname),
+}));
+---
+
+<LanguagePickerReact
+  currentLocale={Astro.currentLocale || "en"}
+  locales={locales}
+  ariaLabel={t("a11y.languagePicker")}
+  client:load
+/>

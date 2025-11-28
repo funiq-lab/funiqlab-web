@@ -1,25 +1,18 @@
 ---
 import { ModeToggle } from "@/components/core/ModeToggle";
-import HamNavMenu from "@/components/core/HamNavMenu.astro";
-import NavMenu from "@/components/core/NavMenu.astro";
-import { Search } from "@/components/core/Search";
 
 import { Button } from "@/components/ui/button";
 
-import { docconfig, SITE } from "@/config";
+import { SITE } from "@/config";
 import { Github } from "simple-icons-astro";
 import { Logo } from "@/components/SiteLogo";
+import LanguagePicker from "./LanguagePicker.astro";
 
 // To pass the tailwindcss classes to the astro component
 const { class: className } = Astro.props;
 ---
 
-<header
-  class:list={[
-    "py-4 px-6 md:px-16 lg:px-48 w-full sticky top-0 z-50",
-    className,
-  ]}
->
+<header class:list={["py-4 px-6 w-full sticky top-0 z-50", className]}>
   <div
     class="flex space-x-4 justify-between items-center md:items-center md:space-x-0 md:max-w-8xl"
   >
@@ -38,22 +31,18 @@ const { class: className } = Astro.props;
           <Logo className="size-[2rem]" />
         </Button>
       </a>
-      <div class="hidden md:block">
-        <NavMenu />
-      </div>
     </div>
 
     <div class="flex flex-row gap-2 md:px-8">
-      {!docconfig.hide_search && <Search client:only="react" />}
-      {
-        !docconfig.hide_repo_button && (
-          <a href={SITE.repo} target="_blank">
-            <Button client:load className="" variant="ghost" size="icon">
-              <Github className="w-[1.2rem] h-[1.2rem]" />
-            </Button>
-          </a>
-        )
-      }
+      <a href={SITE.repo} target="_blank">
+        <Button client:load className="" variant="ghost" size="icon">
+          <Github className="w-[1.2rem] h-[1.2rem]" />
+        </Button>
+      </a>
+
+      <div class="flex-row gap-4 flex">
+        <LanguagePicker />
+      </div>
 
       <div class="flex-row gap-4 flex">
         <ModeToggle client:load transition:persist />

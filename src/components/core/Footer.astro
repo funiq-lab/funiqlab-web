@@ -2,9 +2,12 @@
 import { Socials } from "@/config";
 import { getIconByName } from "@/components/core/Icons";
 import { Button } from "@/components/ui/button";
+import { translateFor } from "@/i18n/utils";
 
 // To pass the tailwindcss classes to the astro component
 const { class: className } = Astro.props;
+
+const t = translateFor(Astro.currentLocale);
 ---
 
 <footer class:list={["py-[1.2rem] px-6 w-full", className]}>
@@ -14,12 +17,12 @@ const { class: className } = Astro.props;
     <p
       class="text-center text-sm leading-loose text-muted-foreground md:text-left"
     >
-      Built by <a
+      {t("footer.builtBy")} <a
         href="https://github.com/yellinzero"
         target="_blank"
         rel="noreferrer"
         class="font-medium underline underline-offset-4">Yellin</a
-      >. The source code is available on
+      >. {t("footer.sourceCode")}
       <a
         href="https://github.com/funiq-lab/funiqlab-web"
         target="_blank"

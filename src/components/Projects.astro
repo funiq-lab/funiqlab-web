@@ -1,45 +1,38 @@
 ---
-import { DrawYourSelfTextLogo, Logo } from "@/components/SiteLogo";
+import { DrawYourselfLogo, FuniqAILogo, FuniqTradingLogo, XAgentsLogo } from "@/components/SiteLogo";
 
 ---
 
-<div class="relative overflow-x-hidden py-8">
-  <div
-    class="pointer-events-none absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-[var(--background)] to-transparent z-20"
-  >
-  </div>
-  <div
-    class="pointer-events-none absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-[var(--background)] to-transparent z-20"
-  >
-  </div>
-
+<div 
+  class="relative overflow-x-hidden py-8"
+  style="-webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent); mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);"
+>
   <div class="flex animate-scroll gap-12 md:gap-20 w-max">
     <div
-      class="flex items-center gap-2 transition-all duration-300 cursor-pointer hover:scale-110"
+      class="transition-all duration-300 cursor-pointer hover:scale-110"
       onclick="goToDrawYourSelf()"
     >
-      <DrawYourSelfTextLogo
-        className="text-Green shrink-0 h-8 w-auto"
-      />
+      <DrawYourselfLogo variant="full" className="h-12 w-auto" />
     </div>
     <div
-      class="flex items-center gap-2 transition-all duration-300 cursor-pointer hover:scale-110"
+      class="transition-all duration-300 cursor-pointer hover:scale-110"
       onclick="goToFuniqAI()"
     >
-      <Logo className="shrink-0 h-8 w-auto" />
-      <span class="text-lg font-medium text-[var(--white-icon)]">
-        Funiq AI
-      </span>
+      <FuniqAILogo variant="full" className="h-12 w-auto" />
     </div>
 
     <div
-      class="flex items-center gap-2 transition-all duration-300 cursor-pointer hover:scale-110"
+      class="transition-all duration-300 cursor-pointer hover:scale-110"
       onclick="goToFuniqTrading()"
     >
-      <Logo className="shrink-0 h-8 w-auto" />
-      <span class="text-lg font-medium text-[var(--white-icon)]">
-        Funiq Trading
-      </span>
+      <FuniqTradingLogo variant="full" className="h-12 w-auto" />
+    </div>
+
+    <div
+      class="transition-all duration-300 cursor-pointer hover:scale-110"
+      onclick="goToXAgents()"
+    >
+      <XAgentsLogo variant="full" className="h-12 w-auto" />
     </div>
   </div>
 </div>
@@ -55,6 +48,10 @@ import { DrawYourSelfTextLogo, Logo } from "@/components/SiteLogo";
 
   const goToFuniqTrading = () => {
     window.open("https://funiq-trading.funiqlab.com", "_blank");
+  };
+
+  const goToXAgents = () => {
+    window.open("https://github.com/funiq-lab/xagents", "_blank");
   };
 </script>
 

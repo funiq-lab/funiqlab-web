@@ -1,0 +1,51 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { translateFor, getRelativeLocalePath } from "@/i18n/utils";
+import { DEFAULT_LOCALE, SUPPORTED_LOCALES } from "@/i18n/config";
+import NotFoundGraphic from "@/assets/404_error.svg";
+import { SITE } from "@/config";
+import type { GetStaticPaths } from "astro";
+
+export const getStaticPaths = (async () =>
+  SUPPORTED_LOCALES.map(locale => ({
+    params: { locale: locale === DEFAULT_LOCALE ? undefined : locale },
+  }))) satisfies GetStaticPaths;
+
+const t = translateFor(Astro.currentLocale);
+const homeHref = getRelativeLocalePath(
+  Astro.currentLocale ?? DEFAULT_LOCALE,
+  "/"
+);
+
+---
+
+<BaseLayout title={`404 | ${SITE.title}`} description={t("404.description")}>
+  <section class="flex flex-col items-center justify-center text-center gap-8 py-24 px-4">
+    <img
+      src={NotFoundGraphic.src}
+      alt="404 illustration"
+      width={NotFoundGraphic.width}
+      height={NotFoundGraphic.height}
+      class="max-w-md w-full"
+      loading="lazy"
+      decoding="async"
+    />
+    <div class="space-y-4 max-w-2xl">
+      <p class="text-sm uppercase tracking-[0.3em] text-muted-foreground">
+        404
+      </p>
+      <h1 class="text-4xl font-extrabold tracking-tight text-balance">
+        {t("404.title")}
+      </h1>
+      <p class="text-lg text-muted-foreground">
+        {t("404.description")}
+      </p>
+    </div>
+    <a
+      href={homeHref}
+      class="inline-flex items-center justify-center rounded-md bg-primary px-6 py-3 text-base font-semibold text-primary-foreground shadow transition hover:opacity-90"
+    >
+      {t("404.cta")}
+    </a>
+  </section>
+</BaseLayout>

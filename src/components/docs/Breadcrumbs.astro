@@ -13,10 +13,10 @@ import { buildBreadcrumbs } from "@/lib/utils";
 const slug: string = Astro.url.pathname;
 
 // Build the breadcrumb trail
-const breadcrumbs: BreadcrumbsProps = buildBreadcrumbs(slug || "");
+const breadcrumbs: BreadcrumbsProps = buildBreadcrumbs(slug || "", Astro.currentLocale);
 
 // To pass the tailwindcss classes to the astro component
-const { class: className } = Astro.props;
+const { class: className, title } = Astro.props;
 ---
 
 <div class:list={className}>
@@ -30,7 +30,7 @@ const { class: className } = Astro.props;
                 {breadcrumb.title}
               </BreadcrumbLink>
             ) : (
-              <span>{breadcrumb.title}</span>
+              <span>{title}</span>
             )}
             {index < breadcrumbs.length - 1 && <span> / </span>}
           </BreadcrumbItem>

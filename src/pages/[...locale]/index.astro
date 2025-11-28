@@ -1,0 +1,19 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Hero from "@/components/home/hero.astro";
+import { translateFor } from "@/i18n/utils";
+
+import type { GetStaticPaths } from "astro";
+import { DEFAULT_LOCALE, SUPPORTED_LOCALES } from "@/i18n/config";
+
+export const getStaticPaths = (async () =>
+  SUPPORTED_LOCALES.map(locale => ({
+    params: { locale: locale === DEFAULT_LOCALE ? undefined : locale },
+  }))) satisfies GetStaticPaths;
+
+const t = translateFor(Astro.currentLocale);
+---
+
+<BaseLayout title={t("site.title")} description={t("site.desc")}>
+  <Hero />
+</BaseLayout>

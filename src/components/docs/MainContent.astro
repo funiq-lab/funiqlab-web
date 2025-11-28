@@ -7,6 +7,7 @@ import type { MainContentProps } from "@/lib/types";
 import { capitalizeFirstLetter } from "@/lib/utils";
 
 import { docconfig } from "@/config";
+import { translateFor } from "@/i18n/utils";
 import BacktoTop from "@/components/core/BacktoTop.astro";
 
 const {
@@ -20,14 +21,18 @@ const {
   hide_breadcrumbs,
   headings,
 } = Astro.props as MainContentProps;
+
+const locale = Astro.currentLocale;
+const t = translateFor(locale);
 ---
 
 <div class="bg-background pt-4 px-6 min-h-static_sidemenu">
-  {!docconfig.hide_breadcrumbs && !hide_breadcrumbs && <Breadcrumbs class="" />}
-  <h1 class="pb-2 italic">{capitalizeFirstLetter(title)}</h1>
+  {!docconfig.hide_breadcrumbs && !hide_breadcrumbs && <Breadcrumbs class="" title={title}/>}
+  <h1 class="pb-2 italic">{title}</h1>
   {
     !docconfig.hide_datetime && pubDatetime && (
       <Datetime
+        locale={locale}
         hide_datetime={docconfig.hide_datetime}
         hide_time={docconfig.hide_time}
         pubDatetime={pubDatetime}
@@ -36,8 +41,8 @@ const {
       />
     )
   }
-  {!docconfig.hide_author && <h6 class="muted font-mono">By {author}</h6>}
-  <div class="prose pt-4">
+  {!docconfig.hide_author && <h6 class="muted font-mono">{t("meta.by")} {author}</h6>}
+  <div class="prose pt-4 break-all">
     <slot />
   </div>
   <BacktoTop />

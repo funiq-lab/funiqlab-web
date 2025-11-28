@@ -7,12 +7,14 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 
 import { MenuIcon, X } from "lucide-react";
 
-import { menu } from "@/lib/utils";
+import { getMenuItemsByLocale, matchPath, cn, docs, buildMenu } from "@/lib/utils";
 
-import { menu_items, docconfig } from "@/config";
-
+import { docconfig } from "@/config";
 const pathname: string = new URL(Astro.request.url).pathname;
-const pathname_part: string = pathname.split("/")[1];
+
+const locale = Astro.currentLocale;
+const menu = buildMenu(docs, locale);
+const menuItems = getMenuItemsByLocale(locale);
 ---
 
 <style>
@@ -42,11 +44,11 @@ const pathname_part: string = pathname.split("/")[1];
   <ScrollArea className=" w-full h-dynamic_hscreen mb-4" client:only="react">
     <div class="mt-6 flex flex-col items-start px-6">
       {
-        menu_items.map((item) => (
+        menuItems.map((item) => (
           <a href={item.href}>
             <Button
               variant="link"
-              className=`${"/" + pathname_part === "/" + item.href.split("/")[1] ? "underline" : ""} text-foreground`
+              className={cn(matchPath(pathname, item.href) ? "underline" : "", "text-foreground")}
               key={item.href}
             >
               {item.title}

@@ -1,4 +1,5 @@
 ---
+import { translateFor } from "@/i18n/utils";
 import type { HeadingHierarchy, HeadingProps } from "@/lib/types";
 import { createHeadingHierarchy } from "@/lib/utils";
 
@@ -8,12 +9,13 @@ const hasToC = toc.length > 1;
 
 // To pass the tailwindcss classes to the astro component
 const { class: className } = Astro.props;
+const t = translateFor(Astro.currentLocale);
 ---
 
 {
   hasToC && (
     <div class:list={["relative", className]}>
-      <h2 class="text-xl border-none italic">On This Page</h2>
+      <h2 class="text-xl border-none italic">{t("on_this_page")}</h2>
       <ul class="list-none m-0">
         {toc.map((heading) => (
           <li class=`${heading.depth === 2 ? "font-semibold" : "text-muted-foreground"}`>

@@ -9,27 +9,18 @@ export const SITE = {
   repo: "https://github.com/funiq-lab",
 };
 
-export const LOCALE = {
-  lang: "en", // html lang code. Set this empty and default will be "en"
-  langTag: ["en-EN", "zh-CN"], // BCP 47 Language Tags. Set this empty [] to use the environment default
-} as const;
 
-export const menu_items: { title: string; href: string }[] = [
+export const menuItems: { titleKey: string; href: string }[] = [
   // {
-  //   title: "Home",
-  //   href: "/",
+  //   titleKey: "docs",
+  //   href: "/getting-started/introduction",
   // },
 ];
 
 // Just works with top-level folders and files. For files, don't add extension as it looks for the slug, and not the file name.
-export const side_nav_menu_order: string[] = [
+export const sideNavMenuOrder: string[] = [
   "getting-started",
-  "guides",
-  "guides/pages",
-  "guides/table-of-contents",
-  "guides/sidebar-navigation",
-  "custom-components",
-  "reference",
+  "getting-started/introduction.mdx",
 ];
 
 // Don't delete anything. You can use 'true' or 'false'.
@@ -40,7 +31,7 @@ export const docconfig = {
   hide_side_navigations: false,
   hide_datetime: false,
   hide_time: true,
-  hide_search: true,
+  hide_search: false,
   hide_repo_button: false,
   hide_author: true,
 };

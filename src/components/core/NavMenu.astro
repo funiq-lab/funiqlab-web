@@ -1,25 +1,24 @@
 ---
 import { Button } from "@/components/ui/button";
 
-import { menu_items } from "@/config";
+import { getMenuItemsByLocale, matchPath } from "@/lib/utils";
 
 const pathname = new URL(Astro.request.url).pathname;
 const pathname_part = pathname.split("/")[1];
+
+const locale = Astro.currentLocale;
+const menuItems = getMenuItemsByLocale(locale);
 ---
 
-<div class="flex gap-4">
+<div class="flex gap-4 justify-end flex-1">
   {
-    menu_items.map((item) => (
+    menuItems.map((item) => (
       <a href={item.href}>
         <Button
-          variant={
-            "/" + pathname_part === "/" + item.href.split("/")[1]
-              ? "secondary"
-              : "ghost"
-          }
+          variant="link"
           key={item.href}
           className={
-            "/" + pathname_part === "/" + item.href.split("/")[1]
+            matchPath(pathname, item.href)
               ? "text-foreground"
               : "text-muted-foreground"
           }

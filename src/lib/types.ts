@@ -66,14 +66,16 @@ export interface HeadingHierarchy extends MarkdownHeading {
 
 export type MenuItem = {
   title?: string;
-  slug: string;
+  id: string; // Path without locale prefix, used for comparison and sorting
+  slug: string; // Full path with locale prefix, used for links
   children: MenuItem[];
 };
 
 // Define the type for menu items to created nested object
 export type MenuItemWithDraft = {
   title?: string;
-  slug: string;
+  id: string; // Path without locale prefix, used for comparison and sorting
+  slug: string; // Full path with locale prefix, used for links
   draft: boolean;
   children: MenuItemWithDraft[];
 };
@@ -93,6 +95,7 @@ export type BreadcrumbsProps = {
 
 // To format datetime
 export interface DatetimesFormatProps {
+  locale?: string;
   pubDatetime: Date;
   modDatetime?: Date | null;
   hide_time: boolean;

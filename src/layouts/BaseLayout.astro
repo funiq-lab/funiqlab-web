@@ -4,29 +4,42 @@ import Header from "@/components/core/Header.astro";
 import Footer from "@/components/core/Footer.astro";
 
 import type { BaseLayoutProps } from "@/lib/types";
-import { capitalizeFirstLetter } from "@/lib/utils";
 
-import { LOCALE, SITE } from "@/config";
+import Background from "@/components/Background";
+import { getLocaleInfo } from "@/i18n/utils";
+import { DEFAULT_LOCALE } from "@/i18n/config";
+import { SITE } from "@/config";
 
 const { title, description, ogImage } = Astro.props as BaseLayoutProps;
+
+const locale = Astro.currentLocale;
+const langTag = getLocaleInfo(locale ?? DEFAULT_LOCALE).langTag;
 ---
 
 <!doctype html>
-<html lang=`${LOCALE.lang ?? "en"}` class="scroll-smooth">
+<html lang=`${langTag}` class="scroll-smooth">
   <head>
     <HeadSEO
-      title=`${title ? capitalizeFirstLetter(title) : SITE.title}`
+      title={`${title ? title : SITE.title}`}
       description={description}
       ogImage={ogImage}
     />
   </head>
   <body class="bg-background text-foreground font-sans">
     <div class="flex flex-col min-h-dvh">
-      <Header class="bg-background" />
-      <main class="flex flex-1 flex-col justify-center items-center px-4">
-        <slot />
-      </main>
-      <Footer class="border-t border-border bg-background" />
+      {/* Dynamic Background */}
+      <Background />
+
+      {/* Main Layout */}
+      <div class="flex flex-col flex-1">
+        <Header />
+
+        <main class="flex-1">
+          <slot />
+        </main>
+
+        <Footer />
+      </div>
     </div>
   </body>
 </html>

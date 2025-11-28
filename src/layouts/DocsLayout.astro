@@ -11,9 +11,11 @@ import MainContent from "@/components/docs/MainContent.astro";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 import type { DocsLayoutProps } from "@/lib/types";
-import { menu, capitalizeFirstLetter } from "@/lib/utils";
+import {  docs, buildMenu, capitalizeFirstLetter } from "@/lib/utils";
 
-import { LOCALE, SITE, docconfig } from "@/config";
+import { SITE, docconfig } from "@/config";
+import { DEFAULT_LOCALE } from "@/i18n/config";
+import { getLocaleInfo } from "@/i18n/utils";
 
 const {
   title,
@@ -29,10 +31,15 @@ const {
   max_width,
   headings,
 } = Astro.props as DocsLayoutProps;
+
+
+const locale = Astro.currentLocale;
+const menu = buildMenu(docs, locale);
+const langTag = getLocaleInfo(locale ?? DEFAULT_LOCALE).langTag;
 ---
 
 <!doctype html>
-<html lang=`${LOCALE.lang ?? "en"}` class="scroll-smooth">
+<html lang=`${langTag}` class="scroll-smooth">
   <head>
     <HeadSEO
       title=`${title ? capitalizeFirstLetter(title) + " | " + SITE.title : SITE.title}`
