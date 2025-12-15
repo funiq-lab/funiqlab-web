@@ -1,9 +1,14 @@
 ---
-import { DrawYourselfLogo, FuniqAILogo, FuniqTradingLogo, XAgentsLogo } from "@/components/SiteLogo";
-
+import {
+  DrawYourselfLogo,
+  FuniqAILogo,
+  FuniqTradingLogo,
+  GridMakerLogo,
+  XAgentsLogo,
+} from "@/components/SiteLogo";
 ---
 
-<div 
+<div
   class="relative overflow-x-hidden py-8"
   style="-webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent); mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);"
 >
@@ -14,6 +19,14 @@ import { DrawYourselfLogo, FuniqAILogo, FuniqTradingLogo, XAgentsLogo } from "@/
     >
       <DrawYourselfLogo variant="full" className="h-12 w-auto" />
     </div>
+
+    <div
+      class="transition-all duration-300 cursor-pointer hover:scale-110"
+      onclick="goToGridMaker()"
+    >
+      <GridMakerLogo variant="full" className="h-12 w-auto" />
+    </div>
+    
     <div
       class="transition-all duration-300 cursor-pointer hover:scale-110"
       onclick="goToFuniqAI()"
@@ -52,6 +65,10 @@ import { DrawYourselfLogo, FuniqAILogo, FuniqTradingLogo, XAgentsLogo } from "@/
 
   const goToXAgents = () => {
     window.open("https://github.com/funiq-lab/xagents", "_blank");
+  };
+
+  const goToGridMaker = () => {
+    window.open("https://grid-maker.net", "_blank");
   };
 </script>
 
