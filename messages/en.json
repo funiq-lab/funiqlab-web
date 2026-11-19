@@ -1,0 +1,75 @@
+{
+  "Meta": {
+    "title": "FuniqLab | Explore without limits",
+    "description": "Yellin, Engineer | Explorer. Explore without limits.",
+    "imageAlt": "A wide view of a space station in front of a distant black hole"
+  },
+  "Nav": {
+    "main": "Main navigation",
+    "work": "Work",
+    "end": "End",
+    "skip": "Skip to projects",
+    "switchLanguage": "切换为中文",
+    "backToStart": "Back to start",
+    "close": "Close",
+    "routeToggle": "Route",
+    "route": "Flight path"
+  },
+  "Journey": {
+    "title": "Event Horizon",
+    "departure": "Departure",
+    "endingTitle": "Explore\nWithout Limits",
+    "more": "More",
+    "mission": "Black hole exploration",
+    "crewRole": "Engineer | Explorer",
+    "crewPosition": "Outside the horizon",
+    "crewTransmission": "Copy that. About to enter the black hole.",
+    "question": "Where am I",
+    "scrollPrompt": "Scroll to explore"
+  },
+  "Work": {
+    "nextProject": "Next project"
+  },
+  "NotFound": {
+    "title": "An unexplored corner of space.",
+    "description": "This page has moved, or is still waiting to be discovered.",
+    "back": "Return to FuniqLab"
+  },
+  "Projects": {
+    "mythology": {
+      "name": "Mythology Stories",
+      "shortDescription": "Mythology Stories is an interactive knowledge base for the world's great myths and legendary worlds.",
+      "transmission": "Exploring mythology. The gods answered my call."
+    },
+    "trading": {
+      "name": "Funiq Trading",
+      "shortDescription": "A modular quantitative framework written in C++",
+      "transmission": "Quant frameworks. My next field of study."
+    },
+    "zero-agent": {
+      "name": "Zero Agent SDK",
+      "shortDescription": "A provider-agnostic AI agent framework"
+    },
+    "lingdong": {
+      "name": "LingDongNews",
+      "shortDescription": "A desktop news ticker with automatic updates, single-line scrolling and keyword or AI highlights.",
+      "transmission": "A floating news window. Catch up between tasks."
+    },
+    "grid-maker": {
+      "name": "Grid Maker",
+      "shortDescription": "Create custom grid overlays, slice images into cells, and batch export with Grid Maker."
+    },
+    "your-mind": {
+      "name": "Your Mind",
+      "shortDescription": "An agent-driven personal digital brain framework."
+    },
+    "daily-ai-learning-lab": {
+      "name": "Daily AI Learning Lab",
+      "shortDescription": "Companion code for the Daily AI Learning series, for readers learning AI and large language models from scratch."
+    },
+    "name-with-bazi-astrology": {
+      "name": "Name With Bazi Astrology",
+      "shortDescription": "An open-source skill for generating, filtering and explaining Chinese names using BaZi, Western astrology, traditional name numerology and poetry."
+    }
+  }
+}

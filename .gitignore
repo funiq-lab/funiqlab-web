@@ -1,8 +1,3 @@
-# build output
-dist/
-# generated types
-.astro/
-
 # dependencies
 node_modules/
 
@@ -15,7 +10,8 @@ pnpm-debug.log*
 
 # environment variables
 .env
-.env.production
+.env.*
+!.env.example
 
 # macOS-specific files
 .DS_Store
@@ -41,3 +37,11 @@ server.config
 # cache directories
 .cache/
 .temp/
+
+# Next.js / local verification
+.next/
+.wrangler/
+out/
+*.tsbuildinfo
+.playwright-mcp/
+incumbent.png
